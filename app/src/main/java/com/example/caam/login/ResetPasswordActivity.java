@@ -1,11 +1,15 @@
 package com.example.caam.login;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,12 +34,25 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
+        System.out.println("Started ResetPassword activity.");
+
         usernameET = (EditText)findViewById(R.id.username);
+
+        Intent i = getIntent();
+        if(i.getStringExtra("username") == null){
+            System.out.println("Is null");
+        }
+        System.out.println(i.getStringExtra("username"));
+        usernameET.setText(i.getStringExtra("username"));
     }
 
-        public void resetPassword(View v){
-            new  ResetPasswordManager().execute("https://jsonplaceholder.typicode.com/posts", usernameET.getText().toString());
-        }
+    public void resetPassword(View v){
+        new  ResetPasswordManager().execute("https://jsonplaceholder.typicode.com/posts", usernameET.getText().toString());
+    }
+
+    public void returnToLogin(View v) {
+        finish();
+    }
 
     private class ResetPasswordManager extends AsyncTask<String, Void, String> {
 
@@ -54,8 +71,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 connection.setDoOutput(true);
 
                 HashMap<String, String> postParams = new HashMap<>();
-                postParams.put("title", params[1]); //change for usernmae
-                postParams.put("body", params[2]); // change for password
+                postParams.put("title", params[1]); //change for username
+                postParams.put("body", "body"); // change for password
                 postParams.put("userId", "1"); // change for password
 
                 OutputStream os = connection.getOutputStream();
@@ -66,13 +83,15 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 os.close();
 
                 int responseCode = connection.getResponseCode();
-                if(responseCode == HttpURLConnection.HTTP_OK){
+                if(responseCode == HttpURLConnection.HTTP_CREATED){
                     String line;
                     BufferedReader br = new BufferedReader((new InputStreamReader(connection.getInputStream())));
                     while((line = br.readLine()) != null){
-                        System.out.println(line);
                         response.append(line);
                     }
+                }
+                else {
+                    System.out.println(responseCode);
                 }
             }
             catch(Exception e){
@@ -84,7 +103,16 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), result, Toast.LENGTH_SHORT).show();
+            String message;
+            try{
+                JSONObject response = new JSONObject(result);
+                message = String.format("Un correo para reestablecer tu contraseña ha sido enviado a %s", response.getString("title"));
+            }
+            catch(JSONException je){
+                message = String.format("Intente de nuevo en unos minutos.");
+            }
+
+            Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
         }
 
         private String getPostString(HashMap<String,String> params) throws UnsupportedEncodingException {
