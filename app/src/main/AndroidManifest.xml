@@ -19,10 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ResetPasswordActivity" />
-        <activity android:name=".SelectCrafterActivity" />
-        <activity
-            android:name=".RouteActivity"
-            android:label="@string/title_activity_route"></activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

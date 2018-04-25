@@ -1,32 +1,23 @@
 package com.example.caam.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-import org.json.*;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class LoginActivity extends AppCompatActivity {
-
+    public static final String TAG = "LoginActivity";
     Authentication auth;
     EditText usernameET;
     EditText passwordET;
@@ -38,26 +29,47 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = new Authentication(this.getBaseContext());
         if(auth.isLogged()){
-            Intent i = new Intent(getApplicationContext(), SelectCrafterActivity.class);
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
             finish();
         }
-
-        System.out.println("Started");
 
         usernameET = (EditText)findViewById(R.id.username);
         passwordET = (EditText)findViewById(R.id.password);
     }
 
     public void login(View v){
-        new LoginManager().execute(String.format("%s/drivers?email=%s&password=%s", Authentication.SERVER, usernameET.getText().toString(), passwordET.getText().toString()));
+        if(validateInput()){
+            new LoginManager().execute(String.format("%s/drivers?email=%s&password=%s", Authentication.SERVER, usernameET.getText().toString(), passwordET.getText().toString()));
+        }
+        else{
+            displayToast("Escriba su correo electrónico y contraseña.");
+        }
     }
 
-    public void startResetPassword(View v){
+    public void resetPassword(View v){
+        if(usernameET.getText().toString().length() > 3){
+            displayToast("Se ha enviado un link para cambiar tu contraseña al correo especificado.");
+        }
+        else{
+            displayToast("Escribe tu correo electrónico.");
+        }
+
+    }
+
+    public boolean validateInput(){
+        return usernameET.getText().toString().length() > 3 && passwordET.getText().toString().length() > 3;
+    }
+
+    public void displayToast(String message){
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    /*public void startResetPassword(View v){
         Intent i = new Intent(getApplicationContext(), ResetPasswordActivity.class);
         i.putExtra("username", usernameET.getText().toString());
         startActivity(i);
-    }
+    }*/
 
     private class LoginManager extends AsyncTask<String, Void, String> {
 
@@ -68,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             try{
                 URL url = new URL(params[0]);
 
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
                 connection.setReadTimeout(15000);
                 connection.setConnectTimeout(15000);
                 connection.setRequestMethod("GET");
@@ -96,13 +108,12 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(auth.setAuthData(result)){
-                System.out.println("Successfully set Auth data");
-                Intent i = new Intent(getApplicationContext(), SelectCrafterActivity.class);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
                 finish();
             }
             else {
-                Toast.makeText(getBaseContext(), result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Usuario o contraseña no válidos.", Toast.LENGTH_SHORT).show();
             }
         }
     }

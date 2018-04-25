@@ -4,22 +4,22 @@
     <item
         android:id="@+id/navigation_route"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
+        android:title="Pasajeros" />
 
     <item
-        android:id="@+id/navigation_services"
+        android:id="@+id/navigation_maintenance"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+        android:title="Mantenimiento" />
 
     <item
-        android:id="@+id/navigation_statistics"
+        android:id="@+id/navigation_performance"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_notifications" />
+        android:title="Estadísticas" />
 
     <item
-        android:id="@+id/navigation_warnings"
+        android:id="@+id/navigation_alerts"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Notificaciones" />
+        android:title="Alertas" />
 
     <item
         android:id="@+id/navigation_sos"

@@ -1,6 +1,7 @@
 package com.example.caam.login;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,11 +20,12 @@ import java.util.Properties;
  */
 
 public class Authentication {
+    private static final String TAG = "Authentication";
     private static final String FILENAME = "auth.xml";
     private static final String USERNAME = "name";
     private static final String EMAIL = "email";
     private static final String CRAFTER = "crafter";
-    public static final String SERVER = "http://192.168.100.17:3000";
+    public static final String SERVER = "https://fake-backend-mobile-app.herokuapp.com";
 
     private Properties data;
     private Context context;
@@ -35,7 +37,7 @@ public class Authentication {
     }
 
     public boolean isLogged() {
-        return data.getProperty("username") != null;
+        return data.getProperty("email") != null;
     }
 
     public boolean setAuthData(String jsonString){
@@ -57,16 +59,29 @@ public class Authentication {
         }
     }
 
+    public void removeAuthData(){
+        data.remove(USERNAME);
+        data.remove(EMAIL);
+        data.remove(CRAFTER);
+        saveData();
+    }
+
     public String getUsername(){
         return data.getProperty(USERNAME);
     }
 
-    public int getCrafter(){
-        return Integer.parseInt(data.getProperty(CRAFTER));
+    public String getCrafter(){
+        Log.d(TAG, data.toString());
+        return data.getProperty(CRAFTER);
     }
 
     public void setCrafter(String plates){
         data.put(CRAFTER, plates);
+        saveData();
+    }
+
+    public void removeCrafter(){
+        data.remove(CRAFTER);
         saveData();
     }
 
