@@ -130,11 +130,34 @@ public class MainActivity extends AppCompatActivity  {
     /**
      * Toolbar methods
      */
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
+
+    public void notificationsHandler(MenuItem item) {
+        Toast.makeText(this, "Notificaciones", Toast.LENGTH_SHORT).show();
+    }
+
+    public void profileHandler(MenuItem item) {
+        Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
+    }
+
+    /*@Override
+    public boolean onOptionItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.notifications:
+                Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.profile:
+                Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return true;
+        }
+    }*/
 
     /**
      * Pager mehtods
