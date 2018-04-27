@@ -58,24 +58,4 @@ ImageButton medicalButton;
             }
         }
     }
-
-    public void dialFirefighters(View v){
-
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:068"));
-        startActivity(intent);
-    }
-
-    public void dialPolice(View v){
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:060"));
-        startActivity(intent);
-    }
-
-    public void dialMedicalServices(View v){
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:065"));
-        startActivity(intent);
-    }
-
 }

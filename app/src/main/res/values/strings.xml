@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Login</string>
+    <string name="app_name">VW Driver</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
     <string name="title_activity_route">RouteActivity</string>
     <string name="title_home">Home</string>
