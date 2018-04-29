@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -47,6 +48,11 @@ public class Profile extends Fragment {
     Button changePassword;
     Button closeSession;
 
+    String loggedDriverName;
+    int loggedDriverRating;
+
+    private static String url = "https://fake-backend-mobile-app.herokuapp.com/drivers/";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,6 +66,7 @@ public class Profile extends Fragment {
         changePassword.setOnClickListener(new ProfileListener());
         closeSession.setOnClickListener(new ProfileListener());
 
+        //driverList = new ArrayList<>();
         new GetInformation().execute();
 
         return view;
@@ -95,47 +102,53 @@ public class Profile extends Fragment {
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
             // Making a request to url and getting response
-            String url = "https://fake-backend-mobile-app.herokuapp.com/drivers";
             String jsonStr = sh.makeServiceCall(url);
 
-            //Log.e(TAG, "Response from url: " + jsonStr);
+            Log.e(TAG, "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    JSONArray ratings = jsonObj.getJSONArray("rating");
+                    JSONArray ratings = new JSONArray(jsonStr);
 
-                    // looping through All Contacts
+                    // looping through All drivers
                     for (int i = 0; i < ratings.length(); i++) {
                         JSONObject r = ratings.getJSONObject(i);
-                        String rating = r.getString("rating");
+                        int rating = r.getInt("rating");
                         String name = r.getString("name");
+
+                        if (name.equals("Bure")){ //TODO: checar que sea el usuario logueado
+                            loggedDriverName = name;
+                            loggedDriverRating = rating;
+                            break;
+
+                        }
+
 
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
-                   /* runOnUiThread(new Runnable() {
+                   getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),
+                            Toast.makeText(getActivity().getApplicationContext(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
-                    });*/
+                    });
 
                 }
 
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
-               /* runOnUiThread(new Runnable() {
+               getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(getActivity().getApplicationContext(),
                                 "Couldn't get json from server. Check LogCat for possible errors!",
                                 Toast.LENGTH_LONG).show();
                     }
-                });*/
+                });
             }
 
             return null;
@@ -144,12 +157,9 @@ public class Profile extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            /*ListAdapter adapter = new SimpleAdapter(MainActivity.this, contactList,
-                    R.layout.list_item, new String[]{ "email","mobile"},
-                    new int[]{R.id.email, R.id.mobile});
-            lv.setAdapter(adapter);*/
-            driverName.setText("name");
-            driverRating.setNumStars(Integer.parseInt("rating"));
+
+            driverName.setText(loggedDriverName);
+            driverRating.setNumStars(loggedDriverRating);
         }
     }
 

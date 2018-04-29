@@ -1,6 +1,5 @@
 package com.example.caam.login;
 
-
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -12,6 +11,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+
+/**
+ * Created by Ernesto on 28-Apr-18.
+ */
 
 public class HttpHandler {
 
@@ -59,7 +62,6 @@ public class HttpHandler {
                 e.printStackTrace();
             }
         }
-
         return sb.toString();
     }
 }

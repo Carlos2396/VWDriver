@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity  {
     Authentication auth;
     private ViewPager viewPager;
 
+    int passengerNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +94,8 @@ public class MainActivity extends AppCompatActivity  {
     public void setAlertId(int alertId) {
         this.alertId = alertId;
     }
+
+    public void setPassengerNum(int passengerNum) { this.passengerNum = passengerNum;}
 
     private class onTouchListener implements View.OnTouchListener{
         @Override
