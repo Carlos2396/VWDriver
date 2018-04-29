@@ -24,6 +24,7 @@ public class Authentication {
     private static final String FILENAME = "auth.xml";
     private static final String USERNAME = "name";
     private static final String EMAIL = "email";
+    private static final String ID = "id";
     private static final String CRAFTER = "crafter";
     public static final String SERVER = "https://fake-backend-mobile-app.herokuapp.com";
 
@@ -51,6 +52,7 @@ public class Authentication {
             JSONObject driver = array.getJSONObject(0);
             data.put(USERNAME, driver.getString(USERNAME));
             data.put(EMAIL, driver.getString(EMAIL));
+            data.put(ID, driver.getInt(ID) + "");
             return saveData();
         }
         catch(JSONException je){
@@ -63,11 +65,16 @@ public class Authentication {
         data.remove(USERNAME);
         data.remove(EMAIL);
         data.remove(CRAFTER);
+        data.remove(ID);
         saveData();
     }
 
     public String getUsername(){
         return data.getProperty(USERNAME);
+    }
+
+    public int getDriverID() {
+        return Integer.parseInt(data.getProperty(ID));
     }
 
     public String getCrafter(){

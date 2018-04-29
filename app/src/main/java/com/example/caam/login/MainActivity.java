@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity  {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setOnTouchListener(new onTouchListener());
+        viewPager.setOnTouchListener(new ViewPagerOnTouchListener());
+        viewPager.setOnDragListener(new ViewPagerOnDragListener());
         setUpViewPager(viewPager);
 
         auth = new Authentication(getBaseContext());
@@ -97,11 +99,16 @@ public class MainActivity extends AppCompatActivity  {
 
     public void setPassengerNum(int passengerNum) { this.passengerNum = passengerNum;}
 
-    private class onTouchListener implements View.OnTouchListener{
+    private class ViewPagerOnTouchListener implements View.OnTouchListener{
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             return true;
         }
+    }
+
+    private class ViewPagerOnDragListener implements View.OnDragListener {
+        @Override
+        public boolean onDrag(View view, DragEvent dragEvent) { return true; }
     }
 
     public void checkPermissions(){
@@ -148,20 +155,6 @@ public class MainActivity extends AppCompatActivity  {
     public void profileHandler(MenuItem item) {
         Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
     }
-
-    /*@Override
-    public boolean onOptionItemSelected(MenuItem item){
-        switch (item.getItemId()) {
-            case R.id.notifications:
-                Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.profile:
-                Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return true;
-        }
-    }*/
 
     /**
      * Pager mehtods
