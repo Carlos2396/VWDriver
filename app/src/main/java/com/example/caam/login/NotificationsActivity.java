@@ -26,7 +26,7 @@ public class NotificationsActivity extends AppCompatActivity {
     private String TAG = NotificationsActivity.class.getSimpleName();
     private ProgressDialog pDialog;
     private ListView lv;
-    private static String url = "https://fake-backend-mobile-app.herokuapp.com/delays";
+    private static String url = "https://fake-backend-mobile-app.herokuapp.com/alerts";
     ArrayList<HashMap<String, String>> notificationsList;
 
     @Override
@@ -72,19 +72,19 @@ public class NotificationsActivity extends AppCompatActivity {
                     for (int i = 0; i < notifs.length(); i++) {
                         JSONObject c = notifs.getJSONObject(i);
 
-                        int unparsedDriverId = c.getInt("driverId");
-                        String driverId = Integer.toString(unparsedDriverId);
-                        int unparsedMinutes = c.getInt("minutes");
-                        String minutes = Integer.toString(unparsedMinutes);
-                        String date = c.getString("date");
+                        String type = c.getString("type");
+                        String priority = c.getString("priority");
+                        String message = c.getString("message");
+                        String datetime = c.getString("datetime");
 
                         // tmp hash map for single contact
                         HashMap<String, String> notif = new HashMap<>();
 
                         // adding each child node to HashMap key => value
-                        notif.put("driverId", driverId);
-                        notif.put("minutes", minutes);
-                        notif.put("date", date);
+                        notif.put("type", type);
+                        notif.put("priority", priority);
+                        notif.put("message", message);
+                        notif.put("datetime", datetime);
 
 
                         // adding notif to notifs list
@@ -131,9 +131,9 @@ public class NotificationsActivity extends AppCompatActivity {
              * */
             ListAdapter adapter = new SimpleAdapter(
                     NotificationsActivity.this, notificationsList,
-                    R.layout.list_item, new String[]{"driverId", "minutes",
-                    "date"}, new int[]{R.id.driverId,
-                    R.id.minutes, R.id.date});
+                    R.layout.list_item, new String[]{"type", "priority", "message",
+                    "datetime"}, new int[]{R.id.type,
+                    R.id.priority, R.id.message, R.id.datetime});
 
             lv.setAdapter(adapter);
         }

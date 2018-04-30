@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity  {
                     setViewPager(ROUTEFRAGMENT);
                     return true;
                 case R.id.navigation_maintenance:
-                    setViewPager(MAINTENANCESELECTCRAFTERFRAGMENT);
+                    setViewPager(MAINTENANCEFRAGMENT);
                     return true;
                 case R.id.navigation_performance:
                     setViewPager(PERFORMANCEFRAGMENT);
