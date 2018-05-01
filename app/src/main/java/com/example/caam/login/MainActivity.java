@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity  {
     public static final int ALERTSFRAGMENT = 4;
     public static final int SOSFRAGMENT = 5;
     public static final int SENDALERTFRAGMENT = 6;
+    public static final int LOADGASFRAGMENT = 7;
+    public static final int CHANGEBATTERYFRAGMENT = 8;
 
     String priority;
     int alertId;
@@ -149,11 +151,14 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void notificationsHandler(MenuItem item) {
-        Toast.makeText(this, "Notificaciones", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, NotificationsActivity.class);
+        startActivity(i);
+
     }
 
     public void profileHandler(MenuItem item) {
-        Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
     }
 
     /**
@@ -169,6 +174,11 @@ public class MainActivity extends AppCompatActivity  {
         adapter.addFragment(new AlertsFragment(), "Alert Fragment");
         adapter.addFragment(new SOSFragment(), "SOS Fragment");
         adapter.addFragment(new SendAlertFragment(), "Send Alert Fragment");
+        adapter.addFragment(new LoadGasFragment(), "Load Gas");
+        adapter.addFragment(new ChangeBatteryFragment(), "Change Battery");
+        //adapter.addFragment(new ChangePasswordFragment(), "Cambiar Clave ");
+
+
         viewPager.setAdapter(adapter);
     }
 
@@ -187,7 +197,7 @@ public class MainActivity extends AppCompatActivity  {
                     setViewPager(ROUTEFRAGMENT);
                     return true;
                 case R.id.navigation_maintenance:
-                    setViewPager(MAINTENANCEFRAGMENT);
+                    setViewPager(MAINTENANCESELECTCRAFTERFRAGMENT);
                     return true;
                 case R.id.navigation_performance:
                     setViewPager(PERFORMANCEFRAGMENT);
@@ -198,6 +208,7 @@ public class MainActivity extends AppCompatActivity  {
                 case R.id.navigation_sos:
                     setViewPager(SOSFRAGMENT);
                     return true;
+
             }
             return false;
         }

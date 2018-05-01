@@ -1,8 +1,10 @@
 package com.example.caam.login;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,61 +25,64 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 
 import javax.net.ssl.HttpsURLConnection;
 
+
 /**
- * Created by Ernesto on 30-Apr-18.
+ * Created by Ernesto on 01-May-18.
  */
 
-public class LoadGasFragment extends Fragment {
-    private String TAG = LoadGasFragment.class.getSimpleName();
+public class ChangePasswordFragment extends AppCompatActivity{
+    private String TAG = ChangePasswordFragment.class.getSimpleName();
 
-    TextView lastLoadTime;
-    EditText numGas;
-    Button gasButton;
+    TextView currPass;
+    EditText newPass;
+    EditText confirmPass;
+    Button changePassButton;
 
-    String currPlatesName;
-    int currId;
-    String lastRefill;
-    int refillNum;
-    JSONArray globalRefills;
-    String currDateTime;
+    String currPassString;
+    String newPassString;
+    String confirmPassString;
+    int driverId;
 
-
-
-    private static String url = "https://fake-backend-mobile-app.herokuapp.com/crafters/";
+    private static String url = "https://fake-backend-mobile-app.herokuapp.com/drivers/";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_gasoline, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_change_password);
 
-        lastLoadTime = (TextView) view.findViewById(R.id.lastLoadTime);
-        numGas = (EditText) view.findViewById(R.id.numGas);
-        gasButton = (Button) view.findViewById(R.id.changeBatteryButton);
+        currPass = (TextView) findViewById(R.id.currPass);
+        newPass = (EditText) findViewById(R.id.newPass);
+        confirmPass = (EditText) findViewById(R.id.confirmPass);
+        changePassButton = (Button) findViewById(R.id.changePassButton);
 
-        Authentication auth = new Authentication(getActivity());
-        currPlatesName = auth.getCrafter();
+        Authentication auth = new Authentication(getBaseContext());
+        driverId = auth.getDriverID();
 
-
-        gasButton.setOnClickListener(new loadGasListener());
         new GetInformation().execute();
+        changePassButton.setOnClickListener(new ChangePasswordListener());
 
-        return view;
+        //return view;
     }
-    private class loadGasListener implements View.OnClickListener{
+    private class ChangePasswordListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             switch(view.getId()){
-                case R.id.changeBatteryButton:
-                    refillNum = Integer.parseInt(numGas.getText().toString());
-                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                    currDateTime = df.format(Calendar.getInstance().getTime());
-                    new CreateRefillManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, currId));
+                case R.id.changePassButton:
+                    newPassString = newPass.getText().toString();
+                    confirmPassString = confirmPass.getText().toString();
+
+                    if (!(newPassString.equals(confirmPassString))){
+                    Toast.makeText(ChangePasswordFragment.this, "Error: No concuerdan las contraseñas", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(ChangePasswordFragment.this, ProfileActivity.class);
+                        startActivity(intent);
+                } else {
+                        new CreatePasswordManager().execute(String.format("%s/drivers/%d", Authentication.SERVER, driverId));
+                    }
+
+
 
                     //new addPassengerCrafter().execute();
                     break;
@@ -86,7 +91,7 @@ public class LoadGasFragment extends Fragment {
         }
     }
 
-    private class CreateRefillManager extends AsyncTask<String, Void, String> {
+    private class CreatePasswordManager extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -148,21 +153,17 @@ public class LoadGasFragment extends Fragment {
 
 
                     JSONObject c = crafters.getJSONObject((currId));*/
-                    JSONObject refill = new JSONObject();
-                    refill.put("type", "Magna");
-                    refill.put("datetime", currDateTime);
-                    refill.put("liters", refillNum);
-                    globalRefills.put(refill);
-                    JSONObject finalRefill = new JSONObject();
-                    finalRefill.put("fuel_reffils", globalRefills);
+                JSONObject driver = new JSONObject();
+
+                driver.put("password", newPassString);
 
 
-                    return finalRefill.toString();
-                } catch (JSONException je) {
-                    je.printStackTrace();
-                    return null;
-                }
+                return driver.toString();
+            } catch (JSONException je) {
+                je.printStackTrace();
+                return null;
             }
+        }
 
 
         @Override
@@ -171,7 +172,7 @@ public class LoadGasFragment extends Fragment {
                 JSONObject alert = new JSONObject(result);
                 if(alert.has("type")){
                     //message.setText("");
-                    Toast.makeText(getActivity(), "Falló envío de refill, intente de nuevo ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePasswordFragment.this, "Falló envío de refill, intente de nuevo ", Toast.LENGTH_SHORT).show();
 
                     //((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).ALERTSFRAGMENT);
                 }
@@ -180,10 +181,11 @@ public class LoadGasFragment extends Fragment {
                 }
             }
             catch (JSONException je){
-                Toast.makeText(getActivity(), "Refill enviada exitosamente.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChangePasswordFragment.this, "Contraseña actualizada exitosamente.", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
     private class GetInformation extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -206,21 +208,17 @@ public class LoadGasFragment extends Fragment {
                     //JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    JSONArray crafters = new JSONArray(jsonStr);
+                    JSONArray drivers = new JSONArray(jsonStr);
 
                     // looping through All Contacts
-                    for (int i = 0; i < crafters.length(); i++) {
-                        JSONObject c = crafters.getJSONObject(i);
+                    for (int i = 0; i < drivers.length(); i++) {
+                        JSONObject c = drivers.getJSONObject(i);
 
-                        String plates = c.getString("plates");
-                        JSONArray refills = c.getJSONArray("fuel_reffils");
-                        globalRefills = c.getJSONArray("fuel_reffils");
+                        int id = c.getInt("id");
+                        String password = c.getString("password");
 
-
-                        if (plates.equals(currPlatesName)){
-                            currId = c.getInt("id");
-                            JSONObject gas = refills.getJSONObject(refills.length()-1);
-                            lastRefill = gas.getString("datetime");
+                        if (id == driverId){
+                            currPassString = password;
                             break;
                         }
 
@@ -228,10 +226,10 @@ public class LoadGasFragment extends Fragment {
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    getActivity().runOnUiThread(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(),
+                            Toast.makeText(getApplicationContext(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG)
                                     .show();
@@ -241,10 +239,10 @@ public class LoadGasFragment extends Fragment {
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
-                getActivity().runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity().getApplicationContext(),
+                        Toast.makeText(getApplicationContext(),
                                 "Couldn't get json from server. Check LogCat for possible errors!",
                                 Toast.LENGTH_LONG)
                                 .show();
@@ -259,7 +257,7 @@ public class LoadGasFragment extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            lastLoadTime.setText(lastRefill);
+            currPass.setText(currPassString);
         }
 
     }

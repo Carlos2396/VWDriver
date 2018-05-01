@@ -130,66 +130,7 @@ public class RouteFragment extends Fragment {
         }
 
         protected String getPostJson(){
-            HttpHandler sh = new HttpHandler();
-            String model = "a";
-            String plates = "a";
-            int year = 0;
-            String start = "a";
-            int capacity = 0;
-            JSONArray batteryArr = null;
-            JSONArray refillArr = null;
 
-            // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(url);
-
-            Log.e(TAG, "Response from url: " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    //JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    JSONArray crafters = new JSONArray(jsonStr);
-
-
-                    JSONObject c = crafters.getJSONObject((currId ));
-
-                    model = c.getString("model");
-                    plates = c.getString("plates");
-                    year = c.getInt("year");
-                    //String year = Integer.toString(unparsedYear);
-                    start = c.getString("start");
-                    capacity = c.getInt("capacity");
-                    batteryArr = c.getJSONArray("batteries");
-                    refillArr = c.getJSONArray("fuel_reffils");
-
-
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    });
-
-                }
-            } else {
-                Log.e(TAG, "Couldn't get json from server.");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
-
-            }
             try{
                 int integerCurrPassNum = Integer.parseInt(currPassNum);
                 if (integerCurrPassNum < passLimit){
@@ -201,14 +142,9 @@ public class RouteFragment extends Fragment {
                 passNum.setText(currPassNum);
 
                 JSONObject crafter = new JSONObject();
-                crafter.put("model", model);
-                crafter.put("plates", "HGT 4569");
-                crafter.put("year", year);
-                crafter.put("start", start);
-                crafter.put("capacity", capacity);
+
                 crafter.put("passengers", Integer.parseInt(currPassNum));
-                crafter.put("batteries", batteryArr);
-                crafter.put("fuel_reffils", refillArr);
+
 
 
                 return crafter.toString();
@@ -251,7 +187,7 @@ public class RouteFragment extends Fragment {
                 HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
                 connection.setReadTimeout(15000);
                 connection.setConnectTimeout(15000);
-                connection.setRequestMethod("PUT");
+                connection.setRequestMethod("PATCH");
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setDoInput(true);
                 connection.setDoOutput(true);
@@ -285,7 +221,7 @@ public class RouteFragment extends Fragment {
         }
 
         protected String getPostJson(){
-            HttpHandler sh = new HttpHandler();
+           /* HttpHandler sh = new HttpHandler();
             String model = "a";
             String plates = "a";
             int year = 0;
@@ -304,12 +240,12 @@ public class RouteFragment extends Fragment {
                     //JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON Array node
-                    JSONArray crafters = new JSONArray(jsonStr);
+                    //JSONArray crafters = new JSONArray(jsonStr);
 
 
-                        JSONObject c = crafters.getJSONObject((currId));
+                        JSONObject c = new JSONObject();
 
-                        model = c.getString("model");
+                       /* model = c.getString("model");
                         plates = c.getString("plates");
                         year = c.getInt("year");
                         //String year = Integer.toString(unparsedYear);
@@ -317,6 +253,8 @@ public class RouteFragment extends Fragment {
                         capacity = c.getInt("capacity");
                         batteryArr = c.getJSONArray("batteries");
                         refillArr = c.getJSONArray("fuel_reffils");
+                       c.put("passengers", Integer.parseInt(currPassNum));
+                       return c.toString();
 
 
                 } catch (final JSONException e) {
@@ -344,7 +282,7 @@ public class RouteFragment extends Fragment {
                     }
                 });
 
-            }
+            }*/
             try{
                 int integerCurrPassNum = Integer.parseInt(currPassNum);
                 if (integerCurrPassNum > 0){
@@ -355,14 +293,8 @@ public class RouteFragment extends Fragment {
                 }
                 passNum.setText(currPassNum);
                 JSONObject crafter = new JSONObject();
-                crafter.put("model", model);
-                crafter.put("plates", plates);
-                crafter.put("year", year);
-                crafter.put("start", start);
-                crafter.put("capacity", capacity);
                 crafter.put("passengers", Integer.parseInt(currPassNum));
-                crafter.put("batteries", batteryArr);
-                crafter.put("fuel_reffils", refillArr);
+
 
                 return crafter.toString();
             }
@@ -433,7 +365,7 @@ public class RouteFragment extends Fragment {
                         if (plates.equals(currCrafterName)){
                             currPassNum = passengers;
                             passLimit = unparsedCapacity;
-                            currId = i;
+                            currId = (i+1);
                             break;
                         }
 

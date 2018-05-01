@@ -84,7 +84,7 @@ public class RouteSelectCrafterFragment extends Fragment {
         @Override
         public void onClick(View view) {
             auth.setCrafter(spinner.getSelectedItem().toString());
-            ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).ROUTEFRAGMENT);
+            ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).MAINTENANCESELECTCRAFTERFRAGMENT);
         }
     }
 

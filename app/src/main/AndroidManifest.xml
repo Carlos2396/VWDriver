@@ -30,6 +30,13 @@
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SelectCrafterActivity" />
+        <activity android:name=".NotificationsActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".ChangePasswordFragment" />
+
+
+
+
     </application>
 
 </manifest>

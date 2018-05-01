@@ -28,6 +28,7 @@ public class MaintenanceFragment extends Fragment {
     TextView batteryTextView;
     Button gasButton;
     Button batteryButton;
+    Button changeCrafterButton;
     String currCrafterName;
     String currPlatesName;
 
@@ -44,14 +45,16 @@ public class MaintenanceFragment extends Fragment {
         currPlates = (TextView) view.findViewById(R.id.currPlates);
         gasTextView = (TextView) view.findViewById(R.id.gasTextView);
         batteryTextView = (TextView) view.findViewById(R.id.batteryTextView);
-        gasButton = (Button) view.findViewById(R.id.gasButton);
+        gasButton = (Button) view.findViewById(R.id.changeBatteryButton);
         batteryButton = (Button) view.findViewById(R.id.batteryButton);
+        changeCrafterButton = (Button) view.findViewById(R.id.changeCrafterButton);
         Authentication auth = new Authentication(getActivity());
         currPlatesName = auth.getCrafter();
 
 
         gasButton.setOnClickListener(new MaintenanceListener());
         batteryButton.setOnClickListener(new MaintenanceListener());
+        changeCrafterButton.setOnClickListener(new MaintenanceListener());
 
         new GetInformation().execute();
 
@@ -62,15 +65,19 @@ public class MaintenanceFragment extends Fragment {
         @Override
         public void onClick(View view) {
             switch(view.getId()){
-                case R.id.gasButton:
-                gasTextView.setText("aaaa");
+                case R.id.changeBatteryButton:
+                    ((MainActivity)getActivity()).setViewPager(7);
+                //gasTextView.setText("aaaa");
                     //new addPassengerCrafter().execute();
                     break;
                 case R.id.batteryButton:
-                    batteryTextView.setText("bbbb");
+                    ((MainActivity)getActivity()).setViewPager(8);
+                    //batteryTextView.setText("bbbb");
 
                     break;
-
+                case R.id.changeCrafterButton:
+                    ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).MAINTENANCESELECTCRAFTERFRAGMENT);
+                    break;
             }
         }
     }

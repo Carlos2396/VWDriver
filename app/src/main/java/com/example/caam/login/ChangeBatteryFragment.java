@@ -1,8 +1,8 @@
 package com.example.caam.login;
 
-import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,25 +26,24 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
 import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Ernesto on 30-Apr-18.
  */
 
-public class LoadGasFragment extends Fragment {
-    private String TAG = LoadGasFragment.class.getSimpleName();
+public class ChangeBatteryFragment extends Fragment{
 
-    TextView lastLoadTime;
-    EditText numGas;
-    Button gasButton;
+    private String TAG = ChangeBatteryFragment.class.getSimpleName();
+
+    TextView lastBatteryChangeTime;
+    Button changeBatteryButton;
 
     String currPlatesName;
     int currId;
-    String lastRefill;
+    String lastBattery;
     int refillNum;
-    JSONArray globalRefills;
+    JSONArray globalBatteries;
     String currDateTime;
 
 
@@ -54,30 +53,28 @@ public class LoadGasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_gasoline, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_battery, container, false);
 
-        lastLoadTime = (TextView) view.findViewById(R.id.lastLoadTime);
-        numGas = (EditText) view.findViewById(R.id.numGas);
-        gasButton = (Button) view.findViewById(R.id.changeBatteryButton);
+        lastBatteryChangeTime = (TextView) view.findViewById(R.id.lastBatteryChangeTime);
+        changeBatteryButton = (Button) view.findViewById(R.id.changeBatteryButton);
 
         Authentication auth = new Authentication(getActivity());
         currPlatesName = auth.getCrafter();
 
 
-        gasButton.setOnClickListener(new loadGasListener());
+        changeBatteryButton.setOnClickListener(new addBatteryListener());
         new GetInformation().execute();
 
         return view;
     }
-    private class loadGasListener implements View.OnClickListener{
+    private class addBatteryListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             switch(view.getId()){
-                case R.id.changeBatteryButton:
-                    refillNum = Integer.parseInt(numGas.getText().toString());
+                case R.id.batteryButton:
                     SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                     currDateTime = df.format(Calendar.getInstance().getTime());
-                    new CreateRefillManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, currId));
+                    new CreateBatteryManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, currId));
 
                     //new addPassengerCrafter().execute();
                     break;
@@ -86,7 +83,7 @@ public class LoadGasFragment extends Fragment {
         }
     }
 
-    private class CreateRefillManager extends AsyncTask<String, Void, String> {
+    private class CreateBatteryManager extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -148,30 +145,32 @@ public class LoadGasFragment extends Fragment {
 
 
                     JSONObject c = crafters.getJSONObject((currId));*/
-                    JSONObject refill = new JSONObject();
-                    refill.put("type", "Magna");
-                    refill.put("datetime", currDateTime);
-                    refill.put("liters", refillNum);
-                    globalRefills.put(refill);
-                    JSONObject finalRefill = new JSONObject();
-                    finalRefill.put("fuel_reffils", globalRefills);
+
+                JSONObject battery = new JSONObject();
+                battery.put("brand", "HTL");
+                battery.put("model", "Max charge");
+                battery.put("date", currDateTime);
+                globalBatteries.put(battery);
+
+                JSONObject b = new JSONObject();
+                b.put("batteries", globalBatteries);
 
 
-                    return finalRefill.toString();
-                } catch (JSONException je) {
-                    je.printStackTrace();
-                    return null;
-                }
+                return b.toString();
+            } catch (JSONException je) {
+                je.printStackTrace();
+                return null;
             }
+        }
 
 
         @Override
         protected void onPostExecute(String result) {
             try{
                 JSONObject alert = new JSONObject(result);
-                if(alert.has("type")){
+                if(alert.has("brand")){
                     //message.setText("");
-                    Toast.makeText(getActivity(), "Falló envío de refill, intente de nuevo ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "bateria enviada exitosamente .", Toast.LENGTH_SHORT).show();
 
                     //((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).ALERTSFRAGMENT);
                 }
@@ -180,7 +179,8 @@ public class LoadGasFragment extends Fragment {
                 }
             }
             catch (JSONException je){
-                Toast.makeText(getActivity(), "Refill enviada exitosamente.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Falló envío de bateria, intente de nuevo", Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -213,14 +213,14 @@ public class LoadGasFragment extends Fragment {
                         JSONObject c = crafters.getJSONObject(i);
 
                         String plates = c.getString("plates");
-                        JSONArray refills = c.getJSONArray("fuel_reffils");
-                        globalRefills = c.getJSONArray("fuel_reffils");
+                        JSONArray batteries = c.getJSONArray("batteries");
+                        globalBatteries = c.getJSONArray("batteries");
 
 
                         if (plates.equals(currPlatesName)){
                             currId = c.getInt("id");
-                            JSONObject gas = refills.getJSONObject(refills.length()-1);
-                            lastRefill = gas.getString("datetime");
+                            JSONObject battery = batteries.getJSONObject(batteries.length()-1);
+                            lastBattery = battery.getString("date");
                             break;
                         }
 
@@ -259,7 +259,7 @@ public class LoadGasFragment extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            lastLoadTime.setText(lastRefill);
+            lastBatteryChangeTime.setText(lastBattery);
         }
 
     }
