@@ -13,17 +13,17 @@
 
     <item
         android:id="@+id/navigation_performance"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_show_chart_black_48dp"
         android:title="Estadísticas" />
 
     <item
         android:id="@+id/navigation_alerts"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_warning_black_48dp"
         android:title="Alertas" />
 
     <item
         android:id="@+id/navigation_sos"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_phone_in_talk_black_48dp"
         android:title="SOS" />
 
 </menu>
