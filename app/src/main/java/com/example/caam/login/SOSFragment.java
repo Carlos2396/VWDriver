@@ -9,23 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SOSFragment extends Fragment {
-ImageButton firefighterButton;
-ImageButton policeButton;
-ImageButton medicalButton;
+ImageView firefighterButton;
+ImageView policeButton;
+ImageView medicalButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sos, container, false);
-        firefighterButton = (ImageButton)v.findViewById(R.id.firefighterBtn);
-        policeButton = (ImageButton)v.findViewById(R.id.securityBtn);
-        medicalButton = (ImageButton)v.findViewById(R.id.medicalBtn);
+        firefighterButton = (ImageView) v.findViewById(R.id.firefighterBtn);
+        policeButton = (ImageView) v.findViewById(R.id.securityBtn);
+        medicalButton = (ImageView) v.findViewById(R.id.medicalBtn);
 
         firefighterButton.setOnClickListener(new EmergencyListener());
         policeButton.setOnClickListener(new EmergencyListener());
