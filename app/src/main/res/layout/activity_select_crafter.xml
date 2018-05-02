@@ -23,8 +23,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Selecciona tu crafter"
+        android:layout_marginTop="16dp"
+        android:text="@string/select_crafter_select_title"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,14 +53,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/spinnerMaintenance"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="132dp"
         android:onClick="selectCrafter"
-        android:text="Elegir"
+        android:text="@string/select_crafter_select"
+        app:layout_constraintBottom_toTopOf="@+id/abandon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerMaintenance" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerMaintenance"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/abandon"
@@ -69,13 +72,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/selectMaintenanceBtn"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
         android:onClick="abandonCrafter"
-        android:text="Abandonar crafter"
+        android:text="@string/select_crafter_abandon"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectMaintenanceBtn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

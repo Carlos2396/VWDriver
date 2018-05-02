@@ -6,6 +6,69 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_maintenance">MaintenanceActivity</string>
+    <string name="title_change_password">Cambiar contraseña</string>
+
+    <string name="general_accept">Aceptar</string>
+    <string name="general_return">Regresar</string>
+    <string name="general_try_again_later">Servicio no disponible. Intente de nuevo más tarde.</string>
+    <string name="general_wait">Por favor, espera un momento.</string>
+
+    <string name="login_user_hint">Correo electrónico</string>
+    <string name="login_password_hint">Contraseña</string>
+    <string name="login_login_button">Iniciar sesión</string>
+    <string name="login_reset_password_button">¿Olvidaste tu contraseña?</string>
+    <string name="login_not_valid_input">Escribe tu correo electrónico y contraseña.</string>
+    <string name="login_reset_password_sent">Se ha enviado un link a tu correo para cambiar tu contraseña.</string>
+    <string name="login_missing_email">Escribe tu correo electrónico.</string>
+    <string name="login_failure">Usuario o contraseña no válidos.</string>
+
+    <string name="main_activity_request_location_permissions_finish">Se requieren permisos para acceder a tu localización.</string>
+
+    <string name="profile_change_password">Cambiar contraseña</string>
+    <string name="profile_end_session">Cerrar sesión</string>
+
+    <string name="select_crafter_select_title">Selecciona tu crafter</string>
+    <string name="select_crafter_select">Seleccionar</string>
+    <string name="select_crafter_abandon">Abandonar crafter</string>
+    <string name="select_crafter_change">Cambiar crafter</string>
+
+    <string name="alerts_priority">Prioridad</string>
+    <string name="alerts_low_priority">Baja</string>
+    <string name="alerts_high_priority">Alta</string>
+    <string name="alerts_alert">Alerta</string>
+    <string name="alerts_traffic">Tráfico</string>
+    <string name="alerts_closed_street">Calle cerrada</string>
+    <string name="alerts_accident">Accidente</string>
+
+    <string name="send_alert_send">Enviar</string>
+    <string name="send_alert_cancel">Cancelar</string>
+    <string name="send_alert_info">Puedes escribir detalles de la alerta.</string>
+    <string name="send_alert_error">Enciende tu localización para poder mandar alertas.</string>
+
+    <string name="sos_firefighters">Bomberos</string>
+    <string name="sos_security">Seguridad</string>
+    <string name="sos_medical_service">Servicio Médico</string>
+
+    <string name="change_password_current">Contraseña actual</string>
+    <string name="change_password_new">Contraseña nueva</string>
+    <string name="change_password_confirm">Confirmar contraseña</string>
+    <string name="change_password_error_incorrect_current">La contraseña actual es incorrecta.</string>
+    <string name="change_password_error_short_new">La nueva contraseña debe tener al menos 4 caracteres.</string>
+    <string name="change_password_error_confirmation_match">La confirmación no coincide.</string>
+    <string name="change_password_success">Contraseña actualizada exitosamente.</string>
+    <string name="change_password_failure">Falló cambio de contraseña. Intente nuevamente.</string>
+
+    <string name="route_time">¡A tiempo!</string>
+    <string name="route_next_stop">Siguiente parada: ITESM Puebla</string>
+    <string name="route_update_failure">No ha sido posible actualizar la cantidad de pasajeros. Se reintentará en 30 segundos.</string>
+
+    <string name="battery_last_change">Último cambio</string>
+    <string name="battery_model">Modelo</string>
+
+    <string name="fuel_last_reffill">Última carga</string>
+    <string name="fuel_reffil">Cargar combustible</string>
+    <string name="fuel_register">Registrar</string>
+    <string name="fuel_liters">litros</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

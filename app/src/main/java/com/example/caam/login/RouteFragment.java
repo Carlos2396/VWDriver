@@ -42,9 +42,6 @@ public class RouteFragment extends Fragment {
     int selectedCrafterId;
     int passLimit;
 
-    private static String url = "https://fake-backend-mobile-app.herokuapp.com/crafters/";
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_route, container, false);
@@ -56,7 +53,6 @@ public class RouteFragment extends Fragment {
 
         Authentication auth = new Authentication(getActivity());
         selectedCrafterId = auth.getCrafter();
-        Log.d(TAG, selectedCrafterId + " selected crafter id");
 
         add.setOnClickListener(new routeListener());
         remove.setOnClickListener(new routeListener());
@@ -188,7 +184,7 @@ public class RouteFragment extends Fragment {
                 }
             }
             catch (JSONException je){
-                Toast.makeText(getActivity(), "Falló actualización de pasajeros.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.route_update_failure, Toast.LENGTH_SHORT).show();
             }
         }
     }

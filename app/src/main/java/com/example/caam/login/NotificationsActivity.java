@@ -39,7 +39,7 @@ public class NotificationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notifications);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Notificaciones");
+        toolbar.setTitle(R.string.title_notifications);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
@@ -56,7 +56,7 @@ public class NotificationsActivity extends AppCompatActivity {
             super.onPreExecute();
             // Showing progress dialog
             pDialog = new ProgressDialog(NotificationsActivity.this);
-            pDialog.setMessage("Please wait...");
+            pDialog.setMessage("Por favor, espera un momento.");
             pDialog.setCancelable(false);
             pDialog.show();
 
@@ -68,8 +68,6 @@ public class NotificationsActivity extends AppCompatActivity {
 
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url);
-
-            Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
@@ -114,14 +112,10 @@ public class NotificationsActivity extends AppCompatActivity {
 
                 }
             } else {
-                Log.e(TAG, "Couldn't get json from server.");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(getApplicationContext(), R.string.general_try_again_later, Toast.LENGTH_LONG).show();
                     }
                 });
 

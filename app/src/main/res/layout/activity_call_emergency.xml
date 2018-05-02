@@ -4,91 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.caam.login.ResetPasswordActivity">
+    tools:context="com.example.caam.login.SendAlertFragment">
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/securityBtn"
         android:layout_width="103dp"
         android:layout_height="111dp"
-        android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:srcCompat="@drawable/policialogo" />
 
     <ImageButton
-        android:id="@+id/imageButton7"
+        android:id="@+id/firefighterBtn"
         android:layout_width="102dp"
         android:layout_height="107dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.166"
         app:srcCompat="@drawable/bomberologo" />
 
     <ImageButton
-        android:id="@+id/imageButton8"
+        android:id="@+id/medicalBtn"
         android:layout_width="97dp"
         android:layout_height="112dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:srcCompat="@drawable/serviciomedicologo" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Seguridad"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.872" />
+        android:layout_marginTop="8dp"
+        android:text="@string/sos_security"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/securityBtn"
+        app:layout_constraintStart_toStartOf="@+id/securityBtn"
+        app:layout_constraintTop_toBottomOf="@+id/securityBtn" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Bomberos"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="8dp"
+        android:text="@string/sos_firefighters"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/firefighterBtn"
+        app:layout_constraintStart_toStartOf="@+id/firefighterBtn"
+        app:layout_constraintTop_toBottomOf="@+id/firefighterBtn" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
-        android:layout_marginBottom="68dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Servicio Médico"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="8dp"
+        android:text="@string/sos_medical_service"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/medicalBtn"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="@+id/medicalBtn"
+        app:layout_constraintTop_toBottomOf="@+id/medicalBtn" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

@@ -49,33 +49,22 @@ public class LoginActivity extends AppCompatActivity {
             new LoginManager().execute(String.format("%s/drivers?email=%s&password=%s", Authentication.SERVER, usernameET.getText().toString(), passwordET.getText().toString()));
         }
         else{
-            displayToast("Escriba su correo electrónico y contraseña.");
+            Toast.makeText(getBaseContext(), R.string.login_not_valid_input, Toast.LENGTH_SHORT).show();
         }
     }
 
     public void resetPassword(View v){
         if(usernameET.getText().toString().length() > 3){
-            displayToast("Se ha enviado un link para cambiar tu contraseña al correo especificado.");
+            Toast.makeText(getBaseContext(), R.string.login_reset_password_sent, Toast.LENGTH_SHORT).show();
         }
         else{
-            displayToast("Escribe tu correo electrónico.");
+            Toast.makeText(getBaseContext(), R.string.login_missing_email, Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public boolean validateInput(){
         return usernameET.getText().toString().length() > 3 && passwordET.getText().toString().length() > 3;
     }
-
-    public void displayToast(String message){
-        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    /*public void startResetPassword(View v){
-        Intent i = new Intent(getApplicationContext(), ResetPasswordActivity.class);
-        i.putExtra("username", usernameET.getText().toString());
-        startActivity(i);
-    }*/
 
     private class LoginManager extends AsyncTask<String, Void, String> {
 
@@ -119,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
             else {
-                Toast.makeText(getBaseContext(), "Usuario o contraseña no válidos.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();
             }
         }
     }

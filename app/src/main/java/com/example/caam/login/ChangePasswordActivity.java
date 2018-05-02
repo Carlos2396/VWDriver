@@ -51,7 +51,7 @@ public class ChangePasswordActivity extends AppCompatActivity{
         setContentView(R.layout.activity_change_password);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Cambiar contraseña");
+        toolbar.setTitle(R.string.title_change_password);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
@@ -74,7 +74,7 @@ public class ChangePasswordActivity extends AppCompatActivity{
 
     public boolean validate() {
         if(!currPassString.equals(currPass.getText().toString())){
-            currError.setText("La contraseña actual es incorrecta.");
+            currError.setText(R.string.change_password_error_incorrect_current);
             return false;
         }
         else{
@@ -82,14 +82,14 @@ public class ChangePasswordActivity extends AppCompatActivity{
         }
 
         if(newPass.getText().toString().length() <= 3){
-            newError.setText("La nueva contraseña debe tener al menos 4 caracteres.");
+            newError.setText(R.string.change_password_error_short_new);
             return false;
         }else{
             newError.setText("");
         }
 
         if(!newPass.getText().toString().equals(confirmPass.getText().toString())){
-            newError.setText("La confirmación no coincide.");
+            newError.setText(R.string.change_password_error_confirmation_match);
             return false;
         }
         else{
@@ -103,7 +103,6 @@ public class ChangePasswordActivity extends AppCompatActivity{
         @Override
         public void onClick(View v) {
             if(validate()){
-                Log.d(TAG, "Changing password.");
                 new ChangePasswordManager().execute(String.format("%s/drivers/%d", Authentication.SERVER, driverId));
             }
         }
@@ -172,7 +171,7 @@ public class ChangePasswordActivity extends AppCompatActivity{
             try{
                 JSONObject crafter = new JSONObject(result);
                 if(crafter.has("id")){
-                    Toast.makeText(getBaseContext(), "Contraseña actualizada exitosamente.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), R.string.change_password_success, Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 else{
@@ -180,7 +179,7 @@ public class ChangePasswordActivity extends AppCompatActivity{
                 }
             }
             catch (JSONException je){
-                Toast.makeText(getBaseContext(), "Falló cambio de contraseña. Intente nuevamente.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), R.string.change_password_failure, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -226,7 +225,7 @@ public class ChangePasswordActivity extends AppCompatActivity{
                 currPassString = user.getString("password");
             }
             catch (JSONException je){
-                Toast.makeText(getBaseContext(), "Intente de nuevo más tarde.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), R.string.general_try_again_later, Toast.LENGTH_SHORT).show();
                 je.printStackTrace();
                 finish();
             }

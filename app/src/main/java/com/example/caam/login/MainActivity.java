@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity  {
         switch (requestCode) {
             case REQUEST_PERMISSIONS_REQUEST_CODE: {
                 if(!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)){
-                    Toast.makeText(this, "Se requieren permisos para acceder a tu localización.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.main_activity_request_location_permissions_finish, Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

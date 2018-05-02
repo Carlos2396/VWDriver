@@ -23,9 +23,9 @@ ImageButton medicalButton;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sos, container, false);
-        firefighterButton = (ImageButton)v.findViewById(R.id.firefighterButton);
-        policeButton = (ImageButton)v.findViewById(R.id.policeButton);
-        medicalButton = (ImageButton)v.findViewById(R.id.medicalButton);
+        firefighterButton = (ImageButton)v.findViewById(R.id.firefighterBtn);
+        policeButton = (ImageButton)v.findViewById(R.id.securityBtn);
+        medicalButton = (ImageButton)v.findViewById(R.id.medicalBtn);
 
         firefighterButton.setOnClickListener(new EmergencyListener());
         policeButton.setOnClickListener(new EmergencyListener());
@@ -40,18 +40,15 @@ ImageButton medicalButton;
         public void onClick(View view) {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             switch(view.getId()){
-                case R.id.firefighterButton:
-
+                case R.id.firefighterBtn:
                     intent.setData(Uri.parse("tel:068"));
                     startActivity(intent);
                     break;
-                case R.id.policeButton:
-
+                case R.id.securityBtn:
                     intent.setData(Uri.parse("tel:060"));
                     startActivity(intent);
                     break;
-
-                case R.id.medicalButton:
+                case R.id.medicalBtn:
                     intent.setData(Uri.parse("tel:065"));
                     startActivity(intent);
                     break;
