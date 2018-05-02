@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity  {
     private static final String TAG = "MainActivity";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
+    // Fragments indexes in viewPager adapter
     public static final int ROUTEFRAGMENT = 0;
     public static final int MAINTENANCESELECTCRAFTERFRAGMENT = 1;
     public static final int PERFORMANCEFRAGMENT = 2;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity  {
     public static final int MAINTENANCEFRAGMENT = 7;
     public static final int CHANGEBATTERYFRAGMENT = 8;
 
-    String priority;
+    String alertPriority;
     int alertId;
     int maintenanceCrafterId;
     Authentication auth;
@@ -79,28 +80,6 @@ public class MainActivity extends AppCompatActivity  {
 
         checkPermissions();
     }
-
-    /**
-     * Getters and Setters
-     */
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public int getAlertId() {
-        return alertId;
-    }
-
-    public void setAlertId(int alertId) {
-        this.alertId = alertId;
-    }
-
-    public void setPassengerNum(int passengerNum) { this.passengerNum = passengerNum;}
 
     private class ViewPagerOnTouchListener implements View.OnTouchListener{
         @Override

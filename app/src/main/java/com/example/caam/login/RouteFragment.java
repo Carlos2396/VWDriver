@@ -50,6 +50,14 @@ public class RouteFragment extends Fragment {
         remove = (ImageView) view.findViewById(R.id.remove);
         passNum = (TextView) view.findViewById(R.id.passNum);
         change = (Button) view.findViewById(R.id.changeBtn);
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), SelectCrafterActivity.class);
+                startActivity(i);
+                ((MainActivity)getActivity()).finish();
+            }
+        });
 
         Authentication auth = new Authentication(getActivity());
         selectedCrafterId = auth.getCrafter();
@@ -226,6 +234,9 @@ public class RouteFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             try {
+                if(result.length() < 2)
+                    throw new JSONException("");
+
                 JSONObject crafter = new JSONObject(result);
                 change.setText(crafter.getString("plates"));
                 passLimit = crafter.getInt("capacity");

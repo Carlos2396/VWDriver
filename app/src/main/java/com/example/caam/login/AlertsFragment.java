@@ -78,8 +78,8 @@ public class AlertsFragment extends Fragment {
                     selected = 3;
                     break;
             }
-            ((MainActivity)getActivity()).setPriority(priority);
-            ((MainActivity)getActivity()).setAlertId(selected);
+            ((MainActivity)getActivity()).alertPriority = priority;
+            ((MainActivity)getActivity()).alertId = selected;
             ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).SENDALERTFRAGMENT);
         }
     }

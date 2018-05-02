@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimary">#0099da</color>
+    <color name="colorPrimaryCopy">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#0068AA</color>
+    <color name="colorCopy">#FF4081</color>
     <color name="colorDarkOrange">#FF8C00</color>
     <color name="colorDarkCyan">#008B8B</color>
+    <color name="vwBlue">#0099da</color>
+    <color name="vwRed">#C82E2D</color>
 </resources>

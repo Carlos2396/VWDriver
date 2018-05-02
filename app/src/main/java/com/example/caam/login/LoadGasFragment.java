@@ -164,6 +164,11 @@ public class LoadGasFragment extends Fragment {
             try{
                 JSONObject crafter = new JSONObject(result);
                 if(crafter.has("id")){
+                    gasLittersTxt.setText("");
+                    JSONArray refills = crafter.getJSONArray("fuel_reffils");
+                    JSONObject refill = refills.getJSONObject(refills.length()-1);
+                    lastLoadTxt.setText(refill.getString("datetime"));
+
                     Toast.makeText(getActivity(), "Carga registrada.", Toast.LENGTH_SHORT).show();
                     ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).MAINTENANCEFRAGMENT);
                 }
@@ -193,6 +198,7 @@ public class LoadGasFragment extends Fragment {
                 connection.setDoInput(true);
 
                 int responseCode = connection.getResponseCode();
+
                 if(responseCode == HttpURLConnection.HTTP_OK){
                     String line;
                     BufferedReader br = new BufferedReader((new InputStreamReader(connection.getInputStream())));

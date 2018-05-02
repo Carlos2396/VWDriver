@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_route"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/crafter"
         android:title="Pasajeros" />
 
     <item
         android:id="@+id/navigation_maintenance"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/consumption48x48"
         android:title="Mantenimiento" />
 
     <item

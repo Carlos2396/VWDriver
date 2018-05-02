@@ -20,18 +20,24 @@
             android:value="@integer/google_play_services_version"
             />
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SelectCrafterActivity" />
-        <activity android:name=".NotificationsActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SelectCrafterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NotificationsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ChangePasswordActivity"
+            android:screenOrientation="portrait"/>
 
 
 

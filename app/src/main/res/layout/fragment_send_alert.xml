@@ -53,15 +53,17 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
         android:text="@string/send_alert_send"
+        android:textColor="@color/vwBlue"
         app:layout_constraintBottom_toTopOf="@+id/cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message" />
+        app:layout_constraintTop_toBottomOf="@+id/message"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/cancel"
@@ -72,6 +74,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/send_alert_cancel"
+        android:textColor="@color/vwBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -86,7 +89,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/send_alert_error"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/vwRed"
         app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

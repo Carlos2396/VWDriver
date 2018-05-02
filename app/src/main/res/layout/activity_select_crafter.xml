@@ -59,6 +59,7 @@
         android:layout_marginTop="132dp"
         android:onClick="selectCrafter"
         android:text="@string/select_crafter_select"
+        android:textColor="@color/vwBlue"
         app:layout_constraintBottom_toTopOf="@+id/abandon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +78,7 @@
         android:layout_marginStart="8dp"
         android:onClick="abandonCrafter"
         android:text="@string/select_crafter_abandon"
+        android:textColor="@color/vwBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

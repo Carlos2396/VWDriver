@@ -87,8 +87,8 @@ public class SendAlertFragment extends Fragment implements LocationListener {
 
         auth = new Authentication(getActivity());
 
-        int selected = ((MainActivity) getActivity()).getAlertId();
-        priority = ((MainActivity) getActivity()).getPriority();
+        int selected = ((MainActivity) getActivity()).alertId;
+        priority = ((MainActivity) getActivity()).alertPriority;
 
         setType(selected);
 
@@ -280,8 +280,8 @@ public class SendAlertFragment extends Fragment implements LocationListener {
                     alert.put("lng", location.getLongitude());
                 }
                 else{
-                    alert.put("lat", null);
-                    alert.put("lng", null);
+                    alert.put("lat", -98.241229);
+                    alert.put("lng", 19.018086);
                 }
 
                 return alert.toString();
