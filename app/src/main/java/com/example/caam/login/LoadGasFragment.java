@@ -61,7 +61,7 @@ public class LoadGasFragment extends Fragment {
         gasButton = (Button) view.findViewById(R.id.changeBatteryButton);
 
         Authentication auth = new Authentication(getActivity());
-        currPlatesName = auth.getCrafter();
+        //currPlatesName = auth.getCrafter();
 
 
         gasButton.setOnClickListener(new loadGasListener());

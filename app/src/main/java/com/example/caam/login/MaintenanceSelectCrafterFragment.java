@@ -18,12 +18,14 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MaintenanceSelectCrafterFragment extends Fragment {
@@ -34,6 +36,7 @@ public class MaintenanceSelectCrafterFragment extends Fragment {
     Button abandonButton;
     Spinner spinner;
     ArrayList<String> craftersList;
+    HashMap<String, Integer> map;
     int selectedCrafterPlateIndex;
 
     @Nullable
@@ -55,7 +58,7 @@ public class MaintenanceSelectCrafterFragment extends Fragment {
         spinner = (Spinner) view.findViewById(R.id.spinner);
         loadCrafters();
 
-        if (auth.getCrafter() == null) {
+        if (auth.getCrafter() == 0) {
             abandonButton.setVisibility(View.GONE);
         }
 
@@ -83,7 +86,7 @@ public class MaintenanceSelectCrafterFragment extends Fragment {
     public class SelectListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            auth.setCrafter(spinner.getSelectedItem().toString());
+            auth.setCrafter(map.get(spinner.getSelectedItem().toString()));
             ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).MAINTENANCEFRAGMENT);
         }
     }
@@ -92,7 +95,7 @@ public class MaintenanceSelectCrafterFragment extends Fragment {
         @Override
         public void onClick(View view) {
             auth.removeCrafter();
-            if(auth.getCrafter() == null){
+            if(auth.getCrafter() == 0){
                 abandonButton.setVisibility(View.GONE);
                 displayToast("Crafter abandoned.");
             }
@@ -137,15 +140,18 @@ public class MaintenanceSelectCrafterFragment extends Fragment {
         protected void onPostExecute(String result) {
             try{
                 JSONArray crafters = new JSONArray(result);
+                JSONObject crafter;
+                map = new HashMap<String, Integer>();
                 craftersList = new ArrayList<String>();
-                String plate;
 
                 for(int i=0; i<crafters.length(); i++){
-                    plate = crafters.getJSONObject(i).getString("plates");
-                    if(plate.equals(auth.getCrafter())){
+                    crafter = crafters.getJSONObject(i);
+                    map.put(crafter.getString("plates"), crafter.getInt("id"));
+
+                    if(crafter.getInt("id") == auth.getCrafter()){
                         selectedCrafterPlateIndex = i;
                     }
-                    craftersList.add(plate);
+                    craftersList.add(crafter.getString("plates"));
                 }
 
                 fillSpinner();

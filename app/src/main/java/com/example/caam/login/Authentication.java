@@ -22,7 +22,6 @@ import java.util.Properties;
 public class Authentication {
     private static final String TAG = "Authentication";
     private static final String FILENAME = "auth.xml";
-    private static final String USERNAME = "name";
     private static final String EMAIL = "email";
     private static final String ID = "id";
     private static final String CRAFTER = "crafter";
@@ -50,7 +49,6 @@ public class Authentication {
             }
 
             JSONObject driver = array.getJSONObject(0);
-            data.put(USERNAME, driver.getString(USERNAME));
             data.put(EMAIL, driver.getString(EMAIL));
             data.put(ID, driver.getInt(ID) + "");
             return saveData();
@@ -62,34 +60,40 @@ public class Authentication {
     }
 
     public void removeAuthData(){
-        data.remove(USERNAME);
         data.remove(EMAIL);
         data.remove(CRAFTER);
         data.remove(ID);
         saveData();
     }
 
-    public String getUsername(){
-        return data.getProperty(USERNAME);
-    }
-
     public int getDriverID() {
-        return Integer.parseInt(data.getProperty(ID));
-    }
-
-    public String getCrafter(){
         Log.d(TAG, data.toString());
-        return data.getProperty(CRAFTER);
+        String driverId = data.getProperty(ID);
+
+        if(driverId == null)
+            return 0;
+
+        return Integer.parseInt(driverId);
     }
 
-    public void setCrafter(String plates){
-        data.put(CRAFTER, plates);
-        saveData();
+    public int getCrafter(){
+        Log.d(TAG, "Get crafter" + data.toString());
+        String crafterId = data.getProperty(CRAFTER);
+
+        if(crafterId == null)
+            return 0;
+
+        return Integer.parseInt(crafterId);
     }
 
-    public void removeCrafter(){
+    public boolean setCrafter(int crafterId){
+        data.put(CRAFTER, crafterId + "");
+        return saveData();
+    }
+
+    public boolean removeCrafter(){
         data.remove(CRAFTER);
-        saveData();
+        return saveData();
     }
 
     private boolean loadData(){

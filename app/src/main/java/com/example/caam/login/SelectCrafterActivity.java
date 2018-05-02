@@ -15,12 +15,14 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SelectCrafterActivity extends AppCompatActivity {
 
@@ -32,6 +34,7 @@ public class SelectCrafterActivity extends AppCompatActivity {
     Spinner spinner;
     ArrayList<String> craftersList;
     int selectedCrafterPlateIndex;
+    HashMap<String, Integer> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class SelectCrafterActivity extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.spinner);
         loadCrafters();
 
-        if(auth.getCrafter() == null){
+        if(auth.getCrafter() == 0){
             abandonButton.setVisibility(View.GONE);
         }
     }
@@ -76,15 +79,19 @@ public class SelectCrafterActivity extends AppCompatActivity {
     }
 
     public void selectCrafter(View v) {
-        auth.setCrafter(spinner.getSelectedItem().toString());
-        Intent i = new Intent(getBaseContext(), MainActivity.class);
-        startActivity(i);
-        finish();
+        if(auth.setCrafter(map.get(spinner.getSelectedItem().toString()))){
+            Intent i = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(i);
+            finish();
+        }
+        else{
+            Toast.makeText(this, "Intente de nuevo.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void abandonCrafter(View v) {
         auth.removeCrafter();
-        if(auth.getCrafter() == null){
+        if(auth.getCrafter() == 0){
             abandonButton.setVisibility(View.GONE);
             displayToast("Crafter abandoned.");
         }
@@ -128,15 +135,18 @@ public class SelectCrafterActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             try{
                 JSONArray crafters = new JSONArray(result);
+                JSONObject crafter;
+                map = new HashMap<String, Integer>();
                 craftersList = new ArrayList<String>();
-                String plate;
 
                 for(int i=0; i<crafters.length(); i++){
-                    plate = crafters.getJSONObject(i).getString("plates");
-                    if(plate.equals(auth.getCrafter())){
+                    crafter = crafters.getJSONObject(i);
+                    map.put(crafter.getString("plates"), crafter.getInt("id"));
+
+                    if(crafter.getInt("id") == auth.getCrafter()){
                         selectedCrafterPlateIndex = i;
                     }
-                    craftersList.add(plate);
+                    craftersList.add(crafter.getString("plates"));
                 }
 
                 fillSpinner();

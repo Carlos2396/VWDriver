@@ -59,7 +59,7 @@ public class ChangeBatteryFragment extends Fragment{
         changeBatteryButton = (Button) view.findViewById(R.id.changeBatteryButton);
 
         Authentication auth = new Authentication(getActivity());
-        currPlatesName = auth.getCrafter();
+        //currPlatesName = auth.getCrafter();
 
 
         changeBatteryButton.setOnClickListener(new addBatteryListener());

@@ -49,7 +49,7 @@ public class MaintenanceFragment extends Fragment {
         batteryButton = (Button) view.findViewById(R.id.batteryButton);
         changeCrafterButton = (Button) view.findViewById(R.id.changeCrafterButton);
         Authentication auth = new Authentication(getActivity());
-        currPlatesName = auth.getCrafter();
+        //currPlatesName = auth.getCrafter();
 
 
         gasButton.setOnClickListener(new MaintenanceListener());

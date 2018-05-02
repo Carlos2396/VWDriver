@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/VW.iml" filepath="$PROJECT_DIR$/VW.iml" />
       <module fileurl="file://C:\Users\Ernesto\AndroidStudioProjects\VWDriver\VW.iml" filepath="C:\Users\Ernesto\AndroidStudioProjects\VWDriver\VW.iml" />
-      <module fileurl="file://$PROJECT_DIR$/VWDriver.iml" filepath="$PROJECT_DIR$/VWDriver.iml" />
       <module fileurl="file://C:\Users\CAAM\AndroidStudioProjects\VW\VWDriver.iml" filepath="C:\Users\CAAM\AndroidStudioProjects\VW\VWDriver.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
