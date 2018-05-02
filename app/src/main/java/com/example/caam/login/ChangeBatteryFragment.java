@@ -33,16 +33,84 @@ import javax.net.ssl.HttpsURLConnection;
  */
 
 public class ChangeBatteryFragment extends Fragment{
-
     private String TAG = ChangeBatteryFragment.class.getSimpleName();
 
-    private static String url = "https://fake-backend-mobile-app.herokuapp.com/crafters/";
+    TextView modelTxt;
+    TextView lastChangeTxt;
+    Button returnBtn;
+    int crafterId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_battery, container, false);
+        View view = inflater.inflate(R.layout.fragment_battery, container, false);
+
+        modelTxt = (TextView) view.findViewById(R.id.modelTxt);
+        lastChangeTxt = (TextView) view.findViewById(R.id.lastChangeTxt);
+        returnBtn = (Button) view.findViewById(R.id.returnBtn);
+        returnBtn.setOnClickListener(new ReturnListener());
+
+        crafterId = ((MainActivity)getActivity()).maintenanceCrafterId;
+
+        new GetCrafterManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, crafterId));
 
         return view;
     }
 
+    private class ReturnListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).MAINTENANCEFRAGMENT);
+        }
+    }
+
+    private class GetCrafterManager extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            StringBuffer response = new StringBuffer();
+
+            try{
+                URL url = new URL(params[0]);
+
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                connection.setReadTimeout(15000);
+                connection.setConnectTimeout(15000);
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
+
+                int responseCode = connection.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK){
+                    String line;
+                    BufferedReader br = new BufferedReader((new InputStreamReader(connection.getInputStream())));
+                    while((line = br.readLine()) != null){
+                        response.append(line);
+                    }
+                }
+                else {
+                    System.out.println(responseCode);
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+
+            return response.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d(TAG, result);
+            try {
+                JSONObject crafter = new JSONObject(result);
+                JSONArray batteries = crafter.getJSONArray("batteries");
+                JSONObject battery = batteries.getJSONObject(batteries.length()-1);
+
+                lastChangeTxt.setText(battery.getString("date"));
+                modelTxt.setText(battery.getString("model"));
+            }
+            catch(JSONException je) {
+                je.printStackTrace();
+            }
+        }
+    }
 }
