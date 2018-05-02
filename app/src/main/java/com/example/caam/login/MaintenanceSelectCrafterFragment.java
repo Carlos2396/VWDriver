@@ -1,7 +1,6 @@
 package com.example.caam.login;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,29 +40,22 @@ public class MaintenanceSelectCrafterFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             Bundle savedInstanceState) throws AndroidRuntimeException {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) throws AndroidRuntimeException {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_maintenance_select_crafter, container, false);
 
-        selectButton = (Button) view.findViewById(R.id.select);
+        selectButton = (Button) view.findViewById(R.id.selectMaintenanceBtn);
         selectButton.setOnClickListener(new SelectListener());
-
-        abandonButton = (Button) view.findViewById(R.id.abandon);
-        abandonButton.setOnClickListener(new AbandonListener());
 
         auth = new Authentication(getActivity());
 
         selectedCrafterPlateIndex = -1;
-        spinner = (Spinner) view.findViewById(R.id.spinner);
+        spinner = (Spinner) view.findViewById(R.id.spinnerMaintenance);
         loadCrafters();
-
-        if (auth.getCrafter() == 0) {
-            abandonButton.setVisibility(View.GONE);
-        }
 
         return view;
     }
+
     public void loadCrafters(){
         new CrafterManager().execute(String.format("%s/crafters", Authentication.SERVER));
     }
@@ -79,26 +71,11 @@ public class MaintenanceSelectCrafterFragment extends Fragment {
         }
     }
 
-    public void displayToast(String message){
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-    }
-
     public class SelectListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            auth.setCrafter(map.get(spinner.getSelectedItem().toString()));
+            ((MainActivity)getActivity()).maintenanceCrafterId = map.get(spinner.getSelectedItem().toString());
             ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).MAINTENANCEFRAGMENT);
-        }
-    }
-
-    private class AbandonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            auth.removeCrafter();
-            if(auth.getCrafter() == 0){
-                abandonButton.setVisibility(View.GONE);
-                displayToast("Crafter abandoned.");
-            }
         }
     }
 
@@ -147,10 +124,6 @@ public class MaintenanceSelectCrafterFragment extends Fragment {
                 for(int i=0; i<crafters.length(); i++){
                     crafter = crafters.getJSONObject(i);
                     map.put(crafter.getString("plates"), crafter.getInt("id"));
-
-                    if(crafter.getInt("id") == auth.getCrafter()){
-                        selectedCrafterPlateIndex = i;
-                    }
                     craftersList.add(crafter.getString("plates"));
                 }
 

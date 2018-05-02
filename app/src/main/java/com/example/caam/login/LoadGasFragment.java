@@ -23,8 +23,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 
 
 import javax.net.ssl.HttpsURLConnection;
@@ -36,57 +40,60 @@ import javax.net.ssl.HttpsURLConnection;
 public class LoadGasFragment extends Fragment {
     private String TAG = LoadGasFragment.class.getSimpleName();
 
-    TextView lastLoadTime;
-    EditText numGas;
-    Button gasButton;
+    TextView lastLoadTxt;
+    EditText gasLittersTxt;
+    Button loadGasBtn;
+    Button returnBtn;
 
-    String currPlatesName;
-    int currId;
+    JSONArray loads;
     String lastRefill;
-    int refillNum;
-    JSONArray globalRefills;
-    String currDateTime;
-
-
-
-    private static String url = "https://fake-backend-mobile-app.herokuapp.com/crafters/";
+    int liters;
+    int crafterId;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gasoline, container, false);
 
-        lastLoadTime = (TextView) view.findViewById(R.id.lastLoadTime);
-        numGas = (EditText) view.findViewById(R.id.numGas);
-        gasButton = (Button) view.findViewById(R.id.changeBatteryButton);
+        lastLoadTxt = (TextView) view.findViewById(R.id.lastRefillTxt);
+        gasLittersTxt = (EditText) view.findViewById(R.id.gasLittersTxt);
+        loadGasBtn = (Button) view.findViewById(R.id.loadGasBtn);
+        loadGasBtn.setOnClickListener(new loadGasListener());
+        returnBtn = (Button) view.findViewById(R.id.returnBtn);
+        returnBtn.setOnClickListener(new ReturnListener());
 
-        Authentication auth = new Authentication(getActivity());
-        //currPlatesName = auth.getCrafter();
 
-
-        gasButton.setOnClickListener(new loadGasListener());
-        new GetInformation().execute();
+        Log.d(TAG, "OnCreate");
+        crafterId = ((MainActivity)getActivity()).maintenanceCrafterId;
+        loadGasBtn.setEnabled(false);
+        new GetCrafterManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, crafterId));
 
         return view;
     }
+
     private class loadGasListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            switch(view.getId()){
-                case R.id.changeBatteryButton:
-                    refillNum = Integer.parseInt(numGas.getText().toString());
-                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                    currDateTime = df.format(Calendar.getInstance().getTime());
-                    new CreateRefillManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, currId));
-
-                    //new addPassengerCrafter().execute();
-                    break;
-
+            if(gasLittersTxt.getText().toString().length() > 0){
+                try{
+                    liters = Integer.parseInt(gasLittersTxt.getText().toString());
+                    new AddFuelRefillManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, crafterId));
+                }
+                catch (NumberFormatException nfe){
+                    gasLittersTxt.setText("");
+                    Toast.makeText(getActivity(), "Número invalido. Debe ser entero.", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
-    private class CreateRefillManager extends AsyncTask<String, Void, String> {
+    private class ReturnListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).MAINTENANCEFRAGMENT);
+        }
+    }
+
+    private class AddFuelRefillManager extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -111,7 +118,7 @@ public class LoadGasFragment extends Fragment {
                 os.close();
 
                 int responseCode = connection.getResponseCode();
-                if(responseCode == HttpURLConnection.HTTP_CREATED){
+                if(responseCode == HttpURLConnection.HTTP_OK){
                     String line;
                     BufferedReader br = new BufferedReader((new InputStreamReader(connection.getInputStream())));
                     while((line = br.readLine()) != null){
@@ -131,136 +138,92 @@ public class LoadGasFragment extends Fragment {
             return response.toString();
         }
 
-        protected String getPostJson() {
+        protected String getPostJson(){
             try{
-           /* HttpHandler sh = new HttpHandler();
+                Date now = new Date();
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-            String jsonStr = sh.makeServiceCall(url);
+                JSONObject crafter = new JSONObject();
+                JSONObject refill = new JSONObject();
+                refill.put("type", "Premium");
+                refill.put("datetime", df.format(now));
+                refill.put("liters", liters);
 
-            Log.e(TAG, "Response from url: " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    //JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    JSONArray crafters = new JSONArray(jsonStr);
-
-
-                    JSONObject c = crafters.getJSONObject((currId));*/
-                    JSONObject refill = new JSONObject();
-                    refill.put("type", "Magna");
-                    refill.put("datetime", currDateTime);
-                    refill.put("liters", refillNum);
-                    globalRefills.put(refill);
-                    JSONObject finalRefill = new JSONObject();
-                    finalRefill.put("fuel_reffils", globalRefills);
-
-
-                    return finalRefill.toString();
-                } catch (JSONException je) {
-                    je.printStackTrace();
-                    return null;
-                }
+                loads.put(refill);
+                crafter.put("fuel_reffils", loads);
+                return crafter.toString();
             }
-
+            catch (JSONException je){
+                je.printStackTrace();
+                return null;
+            }
+        }
 
         @Override
         protected void onPostExecute(String result) {
             try{
-                JSONObject alert = new JSONObject(result);
-                if(alert.has("type")){
-                    //message.setText("");
-                    Toast.makeText(getActivity(), "Falló envío de refill, intente de nuevo ", Toast.LENGTH_SHORT).show();
-
-                    //((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).ALERTSFRAGMENT);
+                JSONObject crafter = new JSONObject(result);
+                if(crafter.has("id")){
+                    Toast.makeText(getActivity(), "Carga registrada.", Toast.LENGTH_SHORT).show();
+                    ((MainActivity)getActivity()).setViewPager(((MainActivity)getActivity()).MAINTENANCEFRAGMENT);
                 }
                 else{
                     throw new JSONException("");
                 }
             }
             catch (JSONException je){
-                Toast.makeText(getActivity(), "Refill enviada exitosamente.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "No se registró la carga. Intente de nuevo.", Toast.LENGTH_SHORT).show();
             }
         }
     }
-    private class GetInformation extends AsyncTask<Void, Void, Void> {
+
+    private class GetCrafterManager extends AsyncTask<String, Void, String> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+        protected String doInBackground(String... params) {
+            StringBuffer response = new StringBuffer();
 
-        }
+            try{
+                URL url = new URL(params[0]);
 
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            HttpHandler sh = new HttpHandler();
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                connection.setReadTimeout(15000);
+                connection.setConnectTimeout(15000);
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
 
-            // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(url);
-
-            Log.e(TAG, "Response from url: " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    //JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    JSONArray crafters = new JSONArray(jsonStr);
-
-                    // looping through All Contacts
-                    for (int i = 0; i < crafters.length(); i++) {
-                        JSONObject c = crafters.getJSONObject(i);
-
-                        String plates = c.getString("plates");
-                        JSONArray refills = c.getJSONArray("fuel_reffils");
-                        globalRefills = c.getJSONArray("fuel_reffils");
-
-
-                        if (plates.equals(currPlatesName)){
-                            currId = c.getInt("id");
-                            JSONObject gas = refills.getJSONObject(refills.length()-1);
-                            lastRefill = gas.getString("datetime");
-                            break;
-                        }
-
-
+                int responseCode = connection.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK){
+                    String line;
+                    BufferedReader br = new BufferedReader((new InputStreamReader(connection.getInputStream())));
+                    while((line = br.readLine()) != null){
+                        response.append(line);
                     }
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    });
-
                 }
-            } else {
-                Log.e(TAG, "Couldn't get json from server.");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
-
+                else {
+                    System.out.println(responseCode);
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
             }
 
-            return null;
+            return response.toString();
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            lastLoadTime.setText(lastRefill);
+        protected void onPostExecute(String result) {
+            Log.d(TAG, result);
+            try {
+                JSONObject crafter = new JSONObject(result);
+                loads = crafter.getJSONArray("fuel_reffils");
+                lastRefill = loads.getJSONObject(loads.length()-1).getString("datetime");
+                lastLoadTxt.setText(lastRefill);
+                loadGasBtn.setEnabled(true);
+            }
+            catch(JSONException je) {
+                je.printStackTrace();
+            }
         }
-
     }
 }

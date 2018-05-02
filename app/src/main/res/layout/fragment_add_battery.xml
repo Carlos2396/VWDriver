@@ -47,7 +47,7 @@
         android:clickable="true"
         android:text="4 Años"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/changeBatteryButton"
+        app:layout_constraintBottom_toTopOf="@+id/loadGasBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -83,7 +83,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/changeBatteryButton"
+        android:id="@+id/loadGasBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"

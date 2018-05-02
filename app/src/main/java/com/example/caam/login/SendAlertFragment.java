@@ -39,6 +39,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -265,10 +268,13 @@ public class SendAlertFragment extends Fragment implements LocationListener {
 
         protected String getPostJson(){
             try{
+                Date now = new Date();
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 JSONObject alert = new JSONObject();
                 alert.put("type", type);
                 alert.put("priority", priority);
                 alert.put("message", message.getText().toString());
+                alert.put("datetime", df.format(now));
                 if(location != null){
                     alert.put("lat", location.getLatitude());
                     alert.put("lng", location.getLongitude());

@@ -42,16 +42,17 @@ public class MainActivity extends AppCompatActivity  {
 
     public static final int ROUTEFRAGMENT = 0;
     public static final int MAINTENANCESELECTCRAFTERFRAGMENT = 1;
-    public static final int MAINTENANCEFRAGMENT = 2;
-    public static final int PERFORMANCEFRAGMENT = 3;
-    public static final int ALERTSFRAGMENT = 4;
-    public static final int SOSFRAGMENT = 5;
-    public static final int SENDALERTFRAGMENT = 6;
-    public static final int LOADGASFRAGMENT = 7;
+    public static final int PERFORMANCEFRAGMENT = 2;
+    public static final int ALERTSFRAGMENT = 3;
+    public static final int SOSFRAGMENT = 4;
+    public static final int SENDALERTFRAGMENT = 5;
+    public static final int LOADGASFRAGMENT = 6;
+    public static final int MAINTENANCEFRAGMENT = 7;
     public static final int CHANGEBATTERYFRAGMENT = 8;
 
     String priority;
     int alertId;
+    int maintenanceCrafterId;
     Authentication auth;
     private ViewPager viewPager;
 
@@ -169,14 +170,13 @@ public class MainActivity extends AppCompatActivity  {
         SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new RouteFragment(), "Route Fragment");
         adapter.addFragment(new MaintenanceSelectCrafterFragment(), "Maintenance Select Crafter Fragment");
-        adapter.addFragment(new MaintenanceFragment(), "Maintenance Fragment");
         adapter.addFragment(new PerformanceFragment(), "Performance Fragment");
         adapter.addFragment(new AlertsFragment(), "Alert Fragment");
         adapter.addFragment(new SOSFragment(), "SOS Fragment");
         adapter.addFragment(new SendAlertFragment(), "Send Alert Fragment");
         adapter.addFragment(new LoadGasFragment(), "Load Gas");
+        adapter.addFragment(new MaintenanceFragment(), "Maintenance Fragment");
         adapter.addFragment(new ChangeBatteryFragment(), "Change Battery");
-        //adapter.addFragment(new ChangePasswordFragment(), "Cambiar Clave ");
 
 
         viewPager.setAdapter(adapter);

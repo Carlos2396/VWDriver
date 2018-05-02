@@ -5,112 +5,29 @@
     android:layout_height="match_parent"
     tools:context="com.example.caam.login.MaintenanceFragment">
 
-    <TextView
-        android:id="@+id/gasTextView"
-        android:layout_width="348dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@android:drawable/editbox_background"
-        android:clickable="true"
-        android:text="Gasolina"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/batteryTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/currCrafter"
-        android:layout_width="346dp"
-        android:layout_height="76dp"
-        android:layout_marginBottom="8dp"
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:drawable/editbox_background"
-        android:clickable="true"
-        android:text="TextView"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/currPlates"
+        android:layout_marginTop="64dp"
+        app:layout_constraintBottom_toTopOf="@+id/changeCrafterBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.657" />
-
-    <TextView
-        android:id="@+id/batteryTextView"
-        android:layout_width="346dp"
-        android:layout_height="74dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@android:drawable/editbox_background"
-        android:clickable="true"
-        android:text="Battería"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/changeCrafterButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/currPlates"
-        android:layout_width="346dp"
-        android:layout_height="74dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@android:drawable/editbox_background"
-        android:clickable="true"
-        android:text="TextView"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/gasTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/changeBatteryButton"
+        android:id="@+id/changeCrafterBtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text=">"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/gasTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="@+id/gasTextView"
-        app:layout_constraintTop_toTopOf="@+id/gasTextView"
-        app:layout_constraintVertical_bias="0.363" />
-
-    <Button
-        android:id="@+id/batteryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text=">"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/batteryTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="@+id/batteryTextView"
-        app:layout_constraintTop_toTopOf="@+id/batteryTextView"
-        app:layout_constraintVertical_bias="0.833" />
-
-    <Button
-        android:id="@+id/changeCrafterButton"
-        android:layout_width="258dp"
-        android:layout_height="62dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginBottom="80dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Cambiar Crafter"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

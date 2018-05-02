@@ -45,13 +45,13 @@ public class SelectCrafterActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
-        selectButton = (Button) findViewById(R.id.select);
+        selectButton = (Button) findViewById(R.id.selectMaintenanceBtn);
         abandonButton = (Button) findViewById(R.id.abandon);
 
         auth = new Authentication(getBaseContext());
 
         selectedCrafterPlateIndex = -1;
-        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinnerMaintenance);
         loadCrafters();
 
         if(auth.getCrafter() == 0){

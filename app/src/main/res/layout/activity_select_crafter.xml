@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerMaintenance"
         android:layout_width="300dp"
         android:layout_height="30dp"
         android:layout_below="@id/textView"
@@ -47,11 +47,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/select"
+        android:id="@+id/selectMaintenanceBtn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinner"
+        android:layout_below="@id/spinnerMaintenance"
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -60,14 +60,14 @@
         android:text="Elegir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerMaintenance" />
 
     <Button
         android:id="@+id/abandon"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/select"
+        android:layout_below="@id/selectMaintenanceBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -76,6 +76,6 @@
         android:text="Abandonar crafter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select" />
+        app:layout_constraintTop_toBottomOf="@+id/selectMaintenanceBtn" />
 
 </android.support.constraint.ConstraintLayout>
