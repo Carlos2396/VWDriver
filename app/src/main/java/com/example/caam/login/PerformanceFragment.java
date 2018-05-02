@@ -186,7 +186,10 @@ public class PerformanceFragment extends Fragment {
         return new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return values[(int)value];
+                if((int)value < values.length)
+                    return values[(int)value];
+                else
+                    return "";
             }
         };
     }
@@ -232,15 +235,14 @@ public class PerformanceFragment extends Fragment {
         }
 
         private void loadStatistics(String json) {
-            ArrayList<Entry> lineEntries = new ArrayList<Entry>();
-
             try{
                 JSONObject entity;
                 JSONArray statistics = new JSONArray(json);
-                if(statistics.length() == 0){
-
+                if(statistics.length() <= 1){
                     return;
                 }
+
+                ArrayList<Entry> lineEntries = new ArrayList<Entry>();
 
                 initLineChart();
 

@@ -1,9 +1,11 @@
 package com.example.caam.login;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +43,11 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Perfil");
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+
         driverRating = (RatingBar) findViewById(R.id.driverRating);
         changePassword = (Button) findViewById(R.id.changePassword);
         closeSession = (Button) findViewById(R.id.closeSession);
@@ -60,17 +67,14 @@ public class ProfileActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.changePassword:
-                    Intent intent = new Intent(ProfileActivity.this, ChangePasswordFragment.class);
+                    Intent intent = new Intent(getBaseContext(), ChangePasswordActivity.class);
                     startActivity(intent);
-                    //Toast.makeText(ProfileActivity.this, "Se ha enviado un correo para que reestablezcas tu contraseña", Toast.LENGTH_LONG).show();
-                    /*Toast.makeText(getApplication(), "This is my Toast message!",
-                        Toast.LENGTH_LONG).show();*/
                     break;
                 case R.id.closeSession:
                     Authentication auth = new Authentication(getBaseContext());
                     auth.removeAuthData();
 
-                    Intent i = new Intent(ProfileActivity.this,LoginActivity.class);
+                    Intent i = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(i);
                     break;
 

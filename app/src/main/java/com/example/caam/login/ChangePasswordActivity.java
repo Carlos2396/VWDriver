@@ -1,16 +1,15 @@
 package com.example.caam.login;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,100 +27,89 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class RouteFragment extends Fragment {
-    private String TAG = RouteFragment.class.getSimpleName();
 
-    CountDownTimer timer;
+/**
+ * Created by Ernesto on 01-May-18.
+ */
 
-    ImageView add;
-    ImageView remove;
-    Button change;
-    TextView passNum;
+public class ChangePasswordActivity extends AppCompatActivity{
+    private String TAG = ChangePasswordActivity.class.getSimpleName();
 
-    int currPassNum;
-    int selectedCrafterId;
-    int passLimit;
+    EditText currPass;
+    EditText newPass;
+    EditText confirmPass;
+    TextView currError;
+    TextView newError;
+    Button changePassButton;
 
-    private static String url = "https://fake-backend-mobile-app.herokuapp.com/crafters/";
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_route, container, false);
-
-        add = (ImageView) view.findViewById(R.id.add);
-        remove = (ImageView) view.findViewById(R.id.remove);
-        passNum = (TextView) view.findViewById(R.id.passNum);
-        change = (Button) view.findViewById(R.id.changeBtn);
-
-        Authentication auth = new Authentication(getActivity());
-        selectedCrafterId = auth.getCrafter();
-        Log.d(TAG, selectedCrafterId + " selected crafter id");
-
-        add.setOnClickListener(new routeListener());
-        remove.setOnClickListener(new routeListener());
-
-        currPassNum = 0;
-        passLimit = 20;
-
-        initTimer();
-
-        new GetCrafterManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, selectedCrafterId));
-        return view;
-    }
-
-    public void initTimer() {
-        timer = new CountDownTimer(1000*60*60*24, 1000*30) {
-            @Override
-            public void onTick(long l) {
-                new UpdatePassengersManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, selectedCrafterId));
-            }
-
-            @Override
-            public void onFinish() {
-                startActivity(((MainActivity)getActivity()).getIntent());
-                ((MainActivity)getActivity()).finish();
-            }
-        };
-    }
+    String currPassString;
+    int driverId;
 
     @Override
-    public void onResume() {
-        super.onResume();
-        initTimer();
-        Log.d(TAG, "onResumed");
-        timer.start();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_change_password);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Cambiar contraseña");
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+
+        currError = (TextView) findViewById(R.id.currErrorTxt);
+        newError = (TextView) findViewById(R.id.newErrorTxt);
+
+        currPass = (EditText) findViewById(R.id.currentTxt);
+        newPass = (EditText) findViewById(R.id.newTxt);
+        confirmPass = (EditText) findViewById(R.id.confirmTxt);
+
+        changePassButton = (Button) findViewById(R.id.changePasswordBtn);
+        changePassButton.setOnClickListener(new ChangeButtonListener());
+
+        Authentication auth = new Authentication(getBaseContext());
+
+        driverId = auth.getDriverID();
+
+        new DriverManager().execute(String.format("%s/drivers/%d", Authentication.SERVER, driverId));
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        timer.cancel();
-        new UpdatePassengersManager().execute(String.format("%s/crafters/%d", Authentication.SERVER, selectedCrafterId));
-        Log.d(TAG, "onPaused");
+    public boolean validate() {
+        if(!currPassString.equals(currPass.getText().toString())){
+            currError.setText("La contraseña actual es incorrecta.");
+            return false;
+        }
+        else{
+            currError.setText("");
+        }
+
+        if(newPass.getText().toString().length() <= 3){
+            newError.setText("La nueva contraseña debe tener al menos 4 caracteres.");
+            return false;
+        }else{
+            newError.setText("");
+        }
+
+        if(!newPass.getText().toString().equals(confirmPass.getText().toString())){
+            newError.setText("La confirmación no coincide.");
+            return false;
+        }
+        else{
+            newError.setText("");
+        }
+
+        return true;
     }
 
-    private class routeListener implements View.OnClickListener{
+    private class ChangeButtonListener implements View.OnClickListener {
         @Override
-        public void onClick(View view) {
-            switch(view.getId()){
-                case R.id.add:
-                    if(currPassNum < passLimit)
-                        currPassNum++;
-                    break;
-                case R.id.remove:
-                    if(currPassNum > 0)
-                        currPassNum--;
-                    break;
+        public void onClick(View v) {
+            if(validate()){
+                Log.d(TAG, "Changing password.");
+                new ChangePasswordManager().execute(String.format("%s/drivers/%d", Authentication.SERVER, driverId));
             }
-            passNum.setText(currPassNum + "");
         }
     }
 
-    /**
-     * Makes the post request
-     */
-    private class UpdatePassengersManager extends AsyncTask<String, Void, String> {
+    private class ChangePasswordManager extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -168,10 +156,10 @@ public class RouteFragment extends Fragment {
 
         protected String getPostJson(){
             try{
-                JSONObject crafter = new JSONObject();
-                crafter.put("passengers", currPassNum);
+                JSONObject driver = new JSONObject();
+                driver.put("password", newPass.getText().toString());
 
-                return crafter.toString();
+                return driver.toString();
             }
             catch (JSONException je){
                 je.printStackTrace();
@@ -183,17 +171,21 @@ public class RouteFragment extends Fragment {
         protected void onPostExecute(String result) {
             try{
                 JSONObject crafter = new JSONObject(result);
-                if(!crafter.has("id")){
+                if(crafter.has("id")){
+                    Toast.makeText(getBaseContext(), "Contraseña actualizada exitosamente.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else{
                     throw new JSONException("");
                 }
             }
             catch (JSONException je){
-                Toast.makeText(getActivity(), "Falló actualización de pasajeros.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Falló cambio de contraseña. Intente nuevamente.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private class GetCrafterManager extends AsyncTask<String, Void, String> {
+    private class DriverManager extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -229,17 +221,15 @@ public class RouteFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            try {
-                JSONObject crafter = new JSONObject(result);
-                change.setText(crafter.getString("plates"));
-                passLimit = crafter.getInt("capacity");
-                currPassNum = crafter.getInt("passengers");
-                passNum.setText(currPassNum + "");
+            try{
+                JSONObject user = new JSONObject(result);
+                currPassString = user.getString("password");
             }
-            catch(JSONException je) {
+            catch (JSONException je){
+                Toast.makeText(getBaseContext(), "Intente de nuevo más tarde.", Toast.LENGTH_SHORT).show();
                 je.printStackTrace();
+                finish();
             }
         }
     }
 }
-

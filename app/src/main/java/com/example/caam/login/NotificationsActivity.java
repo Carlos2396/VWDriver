@@ -1,10 +1,13 @@
 package com.example.caam.login;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -22,10 +25,11 @@ import java.util.HashMap;
  */
 
 public class NotificationsActivity extends AppCompatActivity {
-
     private String TAG = NotificationsActivity.class.getSimpleName();
+
     private ProgressDialog pDialog;
     private ListView lv;
+
     private static String url = "https://fake-backend-mobile-app.herokuapp.com/alerts";
     ArrayList<HashMap<String, String>> notificationsList;
 
@@ -34,11 +38,17 @@ public class NotificationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
 
-         notificationsList = new ArrayList<>();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Notificaciones");
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+
+        notificationsList = new ArrayList<>();
 
         lv = (ListView) findViewById(R.id.list);
         new GetNotifications().execute();
     }
+
     private class GetNotifications extends AsyncTask<Void, Void, Void> {
 
         @Override

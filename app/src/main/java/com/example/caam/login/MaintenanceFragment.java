@@ -26,6 +26,7 @@ public class MaintenanceFragment extends Fragment {
     TextView currPlates;
     TextView gasTextView;
     TextView batteryTextView;
+
     Button gasButton;
     Button batteryButton;
     Button changeCrafterButton;
