@@ -30,7 +30,7 @@ public class NotificationsActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ListView lv;
 
-    private static String url = "https://fake-backend-mobile-app.herokuapp.com/alerts";
+    private static String url = "https://fake-backend-mobile-app.herokuapp.com/alerts?_sort=datetime&_order=desc";
     ArrayList<HashMap<String, String>> notificationsList;
 
     @Override
